@@ -1,4 +1,4 @@
-# Leetcode
+# LeetCode
 
 ## Algorithms
 
@@ -133,4 +133,86 @@ class Solution:
 Runtime: 160 ms, faster than 95.96% of Python3 online submissions for Longest Palindromic Substring.
 
 Memory Usage: 14.4 MB, less than 60.97% of Python3 online submissions for Longest Palindromic Substring.
+
+### 6. ZigZag Conversion 
+
+**Method 1: create `numRows` lists, distribute each char to the corresponding list, then combine.**
+
+```python
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1:
+            return s
+        xlist = []
+        for i in range(numRows):
+            xlist.append([])
+        i = 0
+        step = 1
+        for char in s:
+            xlist[i].append(char)
+            i += step
+            if i == numRows - 1:
+                step = -1
+            elif i == 0:
+                step = 1
+        res = ''
+        for i in range(numRows):
+            res = res + ''.join(xlist[i])
+        return res
+```
+
+Runtime: 97 ms, faster than 20.36% of Python3 online submissions for ZigZag Conversion.
+
+Memory Usage: 14.3 MB, less than 87.98% of Python3 online submissions for ZigZag Conversion.
+
+**Method 2: extract part of the string according to the remainder.**
+
+```python
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1:
+            return s
+        else:
+            p = 2 * numRows - 2
+            res = s[::p]
+            for i in range(1, numRows-1):
+                res1 = list(s[i::p])
+                res2 = list(s[p-i::p])
+                temp = res1 + res2
+                temp[::2] = res1
+                temp[1::2] = res2
+                res = res + ''.join(temp)
+            res = res + s[numRows-1::p]
+            return res
+```
+
+Runtime: 83 ms, faster than 27.94% of Python3 online submissions for ZigZag Conversion.
+
+Memory Usage: 14.3 MB, less than 87.98% of Python3 online submissions for ZigZag Conversion.
+
+
+
+## Database
+
+### 175. Combine Two Tables 
+
+```mssql
+/* Write your T-SQL query statement below */
+SELECT FirstName, LastName, City, State 
+FROM (Person LEFT JOIN Address 
+ON Person.PersonId = Address.PersonId)
+```
+
+### 176. Second Highest Salary 
+
+```mysql
+# Write your MySQL query statement below
+SELECT (
+    SELECT DISTINCT 
+        Salary
+    FROM 
+        Employee 
+    ORDER BY Salary DESC
+    LIMIT 1 OFFSET 1) AS SecondHighestSalary
+```
 

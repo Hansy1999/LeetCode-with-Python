@@ -190,6 +190,60 @@ Runtime: 83 ms, faster than 27.94% of Python3 online submissions for ZigZag Conv
 
 Memory Usage: 14.3 MB, less than 87.98% of Python3 online submissions for ZigZag Conversion.
 
+### 8. String to Integer (atoi) 
+
+```python
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        s = s.strip()
+        if s == '':
+            return 0
+        sign = 1
+        if s[0] == '-':
+            sign = -1
+            s = s[1:]
+        elif s[0] == '+':
+            s = s[1:]
+        i = 0
+        while i < len(s) and s[i].isdigit():
+            i += 1
+        if i == 0:
+            return 0
+        res = int(s[:i]) * sign
+        if res < -2**31:
+            res = -2**31
+        elif res > 2**31 - 1:
+            res = 2**31 - 1
+        return res
+```
+
+Runtime: 32 ms, faster than 83.47% of Python3 online submissions for String to Integer (atoi).
+
+Memory Usage: 14.4 MB, less than 25.41% of Python3 online submissions for String to Integer (atoi).
+
+### 11. Container With Most Water 
+
+```python
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        i = 0
+        j = len(height) - 1
+        res = min(height[i], height[j]) * j
+        while j > i:
+            if height[i] > height[j]:
+                j -= 1
+            else:
+                i += 1
+            now = min(height[i], height[j]) * (j - i)
+            if now > res:
+                res = now
+        return res
+```
+
+Runtime: 716 ms, faster than 79.05% of Python3 online submissions for Container With Most Water.
+
+Memory Usage: 27.6 MB, less than 22.83% of Python3 online submissions for Container With Most Water.
+
 
 
 ## Database

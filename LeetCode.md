@@ -244,6 +244,65 @@ Runtime: 716 ms, faster than 79.05% of Python3 online submissions for Container 
 
 Memory Usage: 27.6 MB, less than 22.83% of Python3 online submissions for Container With Most Water.
 
+### 12. Integer to Roman
+
+**Method 1**
+
+```python
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        res = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'][num % 10]
+        num = num // 10
+        if num:
+            add = ['', 'X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC'][num % 10]
+            res = add + res
+            num = num // 10
+        if num:
+            add = ['', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM'][num % 10]
+            res = add + res
+            num = num // 10
+        if num:
+            add = ['', 'M', 'MM', 'MMM'][num]
+            res = add + res
+        return res
+```
+
+Runtime: 70 ms, faster than 18.91% of Python3 online submissions for Integer to Roman.
+
+Memory Usage: 14.1 MB, less than 84.38% of Python3 online submissions for Integer to Roman.
+
+**Method 2**
+
+```python
+class Solution:
+    def intToRoman(self, num: int) -> str:
+        ones = ['I', 'X', 'C', 'M']
+        fives = ['V', 'L', 'D']
+        res = ''
+        i = 0
+        while num:
+            r = num % 10
+            add = ''
+            if r == 4:
+                add = ones[i] + fives[i]
+                r -= 4
+            elif r == 9:
+                add = ones[i] + ones[i+1]
+                r -= 9
+            elif r >= 5:
+                add = fives[i]
+                r -= 5
+            add = add + ones[i] * r
+            res = add + res
+            num = num // 10
+            i += 1
+        return res
+```
+
+Runtime: 40 ms, faster than 95.60% of Python3 online submissions for Integer to Roman.
+
+Memory Usage: 14.4 MB, less than 5.13% of Python3 online submissions for Integer to Roman.
+
 
 
 ## Database

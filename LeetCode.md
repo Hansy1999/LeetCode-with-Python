@@ -303,6 +303,42 @@ Runtime: 40 ms, faster than 95.60% of Python3 online submissions for Integer to 
 
 Memory Usage: 14.4 MB, less than 5.13% of Python3 online submissions for Integer to Roman.
 
+### 15. 3Sum 
+
+```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        nums.sort()
+        n = len(nums)
+        if n < 3:
+            return res
+        i = 0
+        sub = []
+        while nums[i] <= 0 and i < n-2:
+            if nums[i] != nums[i-1]:
+                sub = []
+            j = i + 1
+            k = n - 1
+            while j < k:
+                if nums[i] + nums[j] + nums[k] == 0:
+                    now = [nums[i], nums[j], nums[k]]
+                    if now not in sub:
+                        sub.append(now)
+                        res.append(now)
+                    j += 1
+                elif nums[i] + nums[j] + nums[k] < 0:
+                    j += 1
+                else:
+                    k -= 1
+            i += 1
+        return res
+```
+
+Runtime: 4910 ms, faster than 14.37% of Python3 online submissions for 3Sum.
+
+Memory Usage: 17.5 MB, less than 73.29% of Python3 online submissions for 3Sum.
+
 
 
 ## Database

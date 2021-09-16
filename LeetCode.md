@@ -339,6 +339,170 @@ Runtime: 4910 ms, faster than 14.37% of Python3 online submissions for 3Sum.
 
 Memory Usage: 17.5 MB, less than 73.29% of Python3 online submissions for 3Sum.
 
+### 16. 3Sum Closest 
+
+```python
+class Solution:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        res = sum(nums[0:3])
+        nums.sort()
+        n = len(nums)
+        i = 0
+        while i < n-2:
+            j = i + 1
+            k = n - 1
+            while j < k:
+                now = nums[i] + nums[j] + nums[k]
+                if now == target:
+                    return target
+                elif now < target:
+                    j += 1
+                else:
+                    k -= 1
+                if abs(now - target) < abs(res - target):
+                    res = now
+            i += 1
+        return res
+```
+
+Runtime: 219 ms, faster than 35.61% of Python3 online submissions for 3Sum Closest.
+
+Memory Usage: 14.2 MB, less than 90.16% of Python3 online submissions for 3Sum Closest.
+
+### 17. Letter Combinations of a Phone Number 
+
+```python
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        dic = {'2': ['a', 'b', 'c'], '3': ['d', 'e', 'f'], '4': ['g', 'h', 'i'],
+              '5': ['j', 'k', 'l'], '6': ['m', 'n', 'o'], '7': ['p', 'q', 'r', 's'],
+              '8': ['t', 'u', 'v'], '9': ['w', 'x', 'y', 'z']}
+        res = []
+        if digits == "":
+            return res
+        res.append('')
+        for d in digits:
+            new = []
+            for i in dic[d]:
+                new = new + [j+i for j in res]
+            res = new
+        return res
+```
+
+Runtime: 28 ms, faster than 86.81% of Python3 online submissions for Letter Combinations of a Phone Number.
+
+Memory Usage: 14.3 MB, less than 62.18% of Python3 online submissions for Letter Combinations of a Phone Number.
+
+### 18. 4Sum 
+
+```python
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        res = []
+        nums.sort()
+        n = len(nums)
+        if n < 4:
+            return res
+        i = 0
+        sub = []
+        while nums[i] <= target / 4 and i < n-3:
+            if nums[i] != nums[i-1]:
+                sub = []
+            j = i + 1
+            jtop = (target - nums[i]) / 3
+            while nums[j] <= jtop and j < n-2:
+                k = j + 1
+                l = n - 1
+                while k < l:
+                    if nums[i] + nums[j] + nums[k] + nums[l] == target:
+                        now = [nums[i], nums[j], nums[k], nums[l]]
+                        if now not in sub:
+                            sub.append(now)
+                            res.append(now)
+                        k += 1
+                    elif nums[i] + nums[j] + nums[k] + nums[l] < target:
+                        k += 1
+                    else:
+                        l -= 1
+                j += 1
+            i += 1
+        return res
+```
+
+Runtime: 1488 ms, faster than 31.69% of Python3 online submissions for 4Sum.
+
+Memory Usage: 14.5 MB, less than 27.31% of Python3 online submissions for 4Sum.
+
+### 19. Remove Nth Node From End of List
+
+```python
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        i = 0
+        temp = head
+        while temp:
+            i += 1
+            temp = temp.next
+        if i == n:
+            return head.next
+        temp = head
+        for j in range(i-n-1):
+            temp = temp.next
+        temp.next = temp.next.next
+        return head
+```
+
+Runtime: 51 ms, faster than 14.41% of Python3 online submissions for Remove Nth Node From End of List.
+
+Memory Usage: 14.3 MB, less than 47.38% of Python3 online submissions for Remove Nth Node From End of List.
+
+### 22. Generate Parentheses 
+
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        dic = {}
+        res = [""]
+        for k in range(1, n+1):
+            dic[k-1] = res
+            res = ["(" + i + ")" for i in dic[k-1]]
+            for x in range(1, k):
+                res = res + ["(" + i + ")" + j for i in dic[x-1] for j in dic[k-x]]
+        return res
+```
+
+Runtime: 36 ms, faster than 68.09% of Python3 online submissions for Generate Parentheses.
+
+Memory Usage: 14.6 MB, less than 67.55% of Python3 online submissions for Generate Parentheses.
+
+### 24. Swap Nodes in Pairs 
+
+```python
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return head
+        elif not head.next:
+            return head
+        temp = head
+        prev = ListNode()
+        prev.next = head.next
+        res = head.next
+        while temp and temp.next:
+            left = temp
+            right = temp.next
+            prev.next = right
+            prev = left
+            temp = right.next
+            left.next = temp
+            right.next = left
+        return res
+```
+
+Runtime: 44 ms, faster than 15.73% of Python3 online submissions for Swap Nodes in Pairs.
+
+Memory Usage: 14.2 MB, less than 48.53% of Python3 online submissions for Swap Nodes in Pairs.
+
 
 
 ## Database

@@ -503,6 +503,74 @@ Runtime: 44 ms, faster than 15.73% of Python3 online submissions for Swap Nodes 
 
 Memory Usage: 14.2 MB, less than 48.53% of Python3 online submissions for Swap Nodes in Pairs.
 
+### 29. Divide Two Integers 
+
+```python
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        sign = 1
+        if dividend < 0:
+            dividend = -dividend
+            sign = -sign
+        if divisor < 0:
+            divisor = -divisor
+            sign = -sign
+        i = 0
+        temp = divisor
+        power = 1
+        divlist = []
+        reslist = []
+        while temp <= dividend:
+            divlist.append(temp)
+            reslist.append(power)
+            temp += temp
+            power += power
+            i += 1
+        res = 0
+        for j in range(i):
+            if divlist[i-1-j] <= dividend:
+                dividend -= divlist[i-1-j]
+                res += reslist[i-1-j]
+        if sign == -1:
+            res = -res
+        if res > 2147483647:
+            return 2147483647
+        return res
+```
+
+Runtime: 46 ms, faster than 21.25% of Python3 online submissions for Divide Two Integers.
+
+Memory Usage: 14.3 MB, less than 53.26% of Python3 online submissions for Divide Two Integers.
+
+### 31. Next Permutation 
+
+```python
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        i = n-1
+        while i > 0 and nums[i-1] >= nums[i]:
+            i -= 1
+        if i == 0:
+            nums.reverse()
+            return
+        j = i-1
+        while i < n and nums[j] < nums[i]:
+            i += 1
+        nums[i-1], nums[j] = nums[j], nums[i-1]
+        temp = nums[j+1:]
+        temp.reverse()
+        nums[j+1:] = temp
+        return
+```
+
+Runtime: 63 ms, faster than 15.72% of Python3 online submissions for Next Permutation.
+
+Memory Usage: 14.3 MB, less than 52.35% of Python3 online submissions for Next Permutation.
+
 
 
 ## Database

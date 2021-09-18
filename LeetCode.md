@@ -571,7 +571,35 @@ Runtime: 63 ms, faster than 15.72% of Python3 online submissions for Next Permut
 
 Memory Usage: 14.3 MB, less than 52.35% of Python3 online submissions for Next Permutation.
 
+### 33. Search in Rotated Sorted Array 
 
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        left = 0
+        right = len(nums) - 1
+        while left < right:
+            idx = (left + right) // 2
+            if nums[idx] == target:
+                return idx
+            elif nums[idx] > target:
+                if nums[idx] >= nums[left] and target < nums[left]:
+                    left = idx + 1
+                else:
+                    right = idx - 1
+            else:
+                if nums[idx] <= nums[right] and target > nums[right]:
+                    right = idx - 1
+                else:
+                    left = idx + 1
+        if left == right and nums[left] == target:
+            return left
+        return -1
+```
+
+Runtime: 60 ms, faster than 17.29% of Python3 online submissions for Search in Rotated Sorted Array.
+
+Memory Usage: 14.8 MB, less than 22.43% of Python3 online submissions for Search in Rotated Sorted Array.
 
 ## Database
 

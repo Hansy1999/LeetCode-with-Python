@@ -1,5 +1,7 @@
 # LeetCode
 
+[TOC]
+
 ## Algorithms
 
 ### 2. Add Two Numbers 
@@ -600,6 +602,73 @@ class Solution:
 Runtime: 60 ms, faster than 17.29% of Python3 online submissions for Search in Rotated Sorted Array.
 
 Memory Usage: 14.8 MB, less than 22.43% of Python3 online submissions for Search in Rotated Sorted Array.
+
+### 34. Find First and Last Position of Element in Sorted Array 
+
+```python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        left = 0
+        right = len(nums) - 1
+        while left <= right:
+            idx = (left + right) // 2
+            if nums[idx] < target:
+                left = idx + 1
+                continue
+            elif nums[idx] > target:
+                right = idx - 1
+                continue
+            else:
+                left1 = left
+                right1 = idx
+                while left1 < right1:
+                    idx1 = (left1 + right1) // 2  # floor
+                    if nums[idx1] < target:
+                        left1 = idx1 + 1
+                    else:
+                        right1 = idx1
+                left2 = idx
+                right2 = right
+                while left2 < right2:
+                    idx2 = (left2 + right2 + 1) // 2  #ceiling
+                    if nums[idx2] > target:
+                        right2 = idx2 - 1
+                    else:
+                        left2 = idx2
+                return [right1, left2]
+        return [-1, -1]
+```
+
+Runtime: 84 ms, faster than 76.54% of Python3 online submissions for Find First and Last Position of Element in Sorted Array.
+
+Memory Usage: 15.5 MB, less than 50.89% of Python3 online submissions for Find First and Last Position of Element in Sorted Array.
+
+### 36. Valid Sudoku 
+
+```python
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        for i in range(9):
+            lst = board[i]
+            for k in range(1,9):
+                if lst[k] != "." and lst[k] in lst[:k]:
+                    return False
+            lst = [board[j][i] for j in range(9)]
+            for k in range(1,9):
+                if lst[k] != "." and lst[k] in lst[:k]:
+                    return False
+        for i in [0, 3, 6]:
+            for j in [0, 3, 6]:
+                lst = board[i][j: j+3] + board[i+1][j: j+3] + board[i+2][j: j+3]
+                for k in range(1,9):
+                    if lst[k] != "." and lst[k] in lst[:k]:
+                        return False
+        return True
+```
+
+Runtime: 109 ms, faster than 26.60% of Python3 online submissions for Valid Sudoku.
+
+Memory Usage: 14.2 MB, less than 69.81% of Python3 online submissions for Valid Sudoku.
 
 ## Database
 

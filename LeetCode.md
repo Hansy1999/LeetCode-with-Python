@@ -645,6 +645,8 @@ Memory Usage: 15.5 MB, less than 50.89% of Python3 online submissions for Find F
 
 ### 36. Valid Sudoku 
 
+**Method 1: build a list for each row, column, box, and find if there are repeated values.** 
+
 ```python
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
@@ -669,6 +671,35 @@ class Solution:
 Runtime: 109 ms, faster than 26.60% of Python3 online submissions for Valid Sudoku.
 
 Memory Usage: 14.2 MB, less than 69.81% of Python3 online submissions for Valid Sudoku.
+
+**Method 2: bitmask (inspired by others).**
+
+```python
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        rows = [0] * 9
+        cols = [0] * 9
+        boxes = [0] * 9
+        for r in range(9):
+            for c in range(9):
+                p = board[r][c]
+                if p == '.':
+                    continue
+                mask = 1 << (int(p) - 1)
+                i = 3 * (r // 3)  + c // 3
+                if rows[r] & mask or cols[c] & mask or boxes[i] & mask:
+                    return False
+                rows[r] |= mask
+                cols[c] |= mask
+                boxes[i] |= mask
+        return True
+```
+
+Runtime: 96 ms, faster than 72.09% of Python3 online submissions for Valid Sudoku.
+
+Memory Usage: 14.2 MB, less than 69.81% of Python3 online submissions for Valid Sudoku.
+
+
 
 ## Database
 

@@ -699,7 +699,82 @@ Runtime: 96 ms, faster than 72.09% of Python3 online submissions for Valid Sudok
 
 Memory Usage: 14.2 MB, less than 69.81% of Python3 online submissions for Valid Sudoku.
 
+### 38. Count and Say 
 
+```python
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        x = "1"
+        for i in range(n-1):
+            y = ""
+            last = x[0]
+            cnt = 0
+            for now in x:
+                if now != last:
+                    y += str(cnt) + last
+                    last = now
+                    cnt = 1
+                else:
+                    cnt += 1
+            x = y + str(cnt) + last
+        return x    
+```
+
+Runtime: 36 ms, faster than 95.89% of Python3 online submissions for Count and Say.
+
+Memory Usage: 14.4 MB, less than 22.54% of Python3 online submissions for Count and Say.
+
+### 39. Combination Sum
+
+```python
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+        candidates.sort(reverse = True)
+        for i in range(len(candidates)):
+            cnt = target // candidates[i]
+            if target == candidates[i] * cnt:
+                res.append([candidates[i]] * cnt)
+            cnt = (target - 1) // candidates[i]  # minus 1 when divisible
+            for j in range(1, cnt+1):
+                res += [[candidates[i]] * j + k 
+                        for k in Solution().combinationSum(
+                            candidates[i+1:], target - candidates[i] * j)]
+        return res
+```
+
+Runtime: 98 ms, faster than 45.50% of Python3 online submissions for Combination Sum.
+
+Memory Usage: 14.4 MB, less than 51.63% of Python3 online submissions for Combination Sum.
+
+### 40. Combination Sum II 
+
+```python
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+        if sum(candidates) < target:
+            return res
+        if len(set(candidates)) == 1 and target % candidates[0] == 0:  # handle all-1 condition
+            return [[candidates[0]] * (target // candidates[0])]
+        candidates.sort(reverse = True)
+        for i in range(len(candidates)):
+            if target < candidates[i]:
+                continue
+            elif target == candidates[i]:
+                res.append([candidates[i]])
+            else:
+                res += [[candidates[i]] + k for k in Solution().combinationSum2(candidates[i+1:], target - candidates[i])]
+        uni = []  # unique items in res
+        for i in res:
+            if i not in uni:
+                uni.append(i)
+        return uni
+```
+
+Runtime: 80 ms, faster than 56.40% of Python3 online submissions for Combination Sum II.
+
+Memory Usage: 14.4 MB, less than 49.73% of Python3 online submissions for Combination Sum II.
 
 ## Database
 

@@ -776,6 +776,36 @@ Runtime: 80 ms, faster than 56.40% of Python3 online submissions for Combination
 
 Memory Usage: 14.4 MB, less than 49.73% of Python3 online submissions for Combination Sum II.
 
+### 43. Multiply Strings 
+
+```python
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        res = [0]
+        n1 = len(num1)
+        n2 = len(num2)
+        lst1 = list(num1)
+        lst2 = list(num2)
+        lst1.reverse()
+        lst2.reverse()
+        for k in range(n1+n2-1):
+            i = max(0, k-n2+1)
+            digit = 0
+            while i < n1 and k - i >= 0:
+                digit += int(lst1[i]) * int(lst2[k-i])
+                i += 1
+            digit += res[-1]
+            res[-1] = digit % 10
+            res.append(digit // 10)
+        res.reverse()
+        output = ''.join([str(i) for i in res]).lstrip('0')
+        return output if output else '0'
+```
+
+Runtime: 124 ms, faster than 43.89% of Python3 online submissions for Multiply Strings.
+
+Memory Usage: 14.4 MB, less than 24.99% of Python3 online submissions for Multiply Strings.
+
 ## Database
 
 ### 175. Combine Two Tables 

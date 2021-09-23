@@ -806,6 +806,36 @@ Runtime: 124 ms, faster than 43.89% of Python3 online submissions for Multiply S
 
 Memory Usage: 14.4 MB, less than 24.99% of Python3 online submissions for Multiply Strings.
 
+### 45. Jump Game II 
+
+```python
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        res = 0
+        now = 0
+        n = len(nums)
+        if n == 1:
+            return 0
+        elif nums[0] >= n-1:
+            return 1
+        while now < n-1:
+            far = 0
+            farid = 0
+            for i in range(1, nums[now]+1):
+                if i + nums[now+i] > far:
+                    far = i + nums[now+i]
+                    farid = i
+            if now + far >= n-1:
+                return res + 2
+            else:
+                res += 1
+                now += farid
+```
+
+Runtime: 112 ms, faster than 98.55% of Python3 online submissions for Jump Game II.
+
+Memory Usage: 15.1 MB, less than 72.39% of Python3 online submissions for Jump Game II.
+
 ## Database
 
 ### 175. Combine Two Tables 

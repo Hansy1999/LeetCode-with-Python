@@ -836,6 +836,62 @@ Runtime: 112 ms, faster than 98.55% of Python3 online submissions for Jump Game 
 
 Memory Usage: 15.1 MB, less than 72.39% of Python3 online submissions for Jump Game II.
 
+### 46. Permutations 
+
+```python
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        res = [[nums[0]]]
+        n = len(nums)
+        i = 1
+        while i < n:
+            now = nums[i]
+            for j in range(len(res)):
+                temp = res.pop(0)
+                for k in range(len(temp)+1):
+                    res.append(temp[:k] + [now] + temp[k:])
+            i += 1
+        return res
+```
+
+Runtime: 40 ms, faster than 74.21% of Python3 online submissions for Permutations.
+
+Memory Usage: 14.2 MB, less than 89.06% of Python3 online submissions for Permutations.
+
+### 47. Permutations II 
+
+```python
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = [[]]
+        while nums:
+            now = nums.pop(0)
+            i = 1  # find how many now's are there in list nums
+            while nums and nums[0] == now:
+                nums.pop(0)
+                i += 1
+            for j in range(len(res)):
+                temp = res.pop(0)  # for each list in res
+                tempres = []
+                for k in range(len(temp)+1):
+                    tempres.append(temp[:k] + [now] + temp[k:])  # insert the 1st now
+                p = i - 1
+                while p:  # insert other now's
+                    p -= 1
+                    for l in range(len(tempres)):
+                        y = tempres.pop(0)
+                        for m in range(y.index(now) + 1):
+                            # insert prior to all inserted now's
+                            tempres.append(y[:m] + [now] + y[m:])
+                res += tempres
+        return res
+```
+
+Runtime: 44 ms, faster than 99.77% of Python3 online submissions for Permutations II.
+
+Memory Usage: 14.5 MB, less than 77.74% of Python3 online submissions for Permutations II.
+
 ## Database
 
 ### 175. Combine Two Tables 

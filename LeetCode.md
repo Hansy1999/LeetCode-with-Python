@@ -892,6 +892,47 @@ Runtime: 44 ms, faster than 99.77% of Python3 online submissions for Permutation
 
 Memory Usage: 14.5 MB, less than 77.74% of Python3 online submissions for Permutations II.
 
+### 48. Rotate Image 
+
+```python
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        n = len(matrix)
+        for i in range(n//2):
+            for j in range(i, n-i-1):
+                temp, matrix[i][j] = matrix[i][j], matrix[n-j-1][i]
+                temp, matrix[j][n-i-1] = matrix[j][n-i-1], temp
+                temp, matrix[n-i-1][n-j-1] = matrix[n-i-1][n-j-1], temp
+                matrix[n-j-1][i] = temp
+```
+
+Runtime: 36 ms, faster than 68.69% of Python3 online submissions for Rotate Image.
+
+Memory Usage: 14.3 MB, less than 59.63% of Python3 online submissions for Rotate Image.
+
+### 49. Group Anagrams 
+
+```python
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        res = {}
+        for s in strs:
+            slst = [0] * 26
+            for i in list(s):
+                n = ord(i) - 97
+                slst[n] += 1
+            slst = tuple(slst)
+            res[slst] = res.get(slst, []) + [s]
+        return list(res.values())
+```
+
+Runtime: 120 ms, faster than 43.58% of Python3 online submissions for Group Anagrams.
+
+Memory Usage: 18.9 MB, less than 21.38% of Python3 online submissions for Group Anagrams.
+
 ## Database
 
 ### 175. Combine Two Tables 

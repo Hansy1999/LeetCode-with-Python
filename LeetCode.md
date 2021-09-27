@@ -933,6 +933,27 @@ Runtime: 120 ms, faster than 43.58% of Python3 online submissions for Group Anag
 
 Memory Usage: 18.9 MB, less than 21.38% of Python3 online submissions for Group Anagrams.
 
+### 50. Pow(x, n) 
+
+```python
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        if n < 0:
+            return 1 / Solution().myPow(x, -n)
+        res = 1
+        now = x
+        while n > 0:
+            if n % 2:
+                res = res * now
+            n = n // 2
+            now = now * now
+        return res
+```
+
+Runtime: 32 ms, faster than 66.42% of Python3 online submissions for Pow(x, n).
+
+Memory Usage: 14.2 MB, less than 50.06% of Python3 online submissions for Pow(x, n).
+
 ## Database
 
 ### 175. Combine Two Tables 

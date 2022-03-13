@@ -954,6 +954,108 @@ Runtime: 32 ms, faster than 66.42% of Python3 online submissions for Pow(x, n).
 
 Memory Usage: 14.2 MB, less than 50.06% of Python3 online submissions for Pow(x, n).
 
+### 54. Spiral Matrix
+
+```python
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        m = len(matrix)
+        if m == 0:
+            return []
+        elif m == 1:
+            return matrix[0]
+        res = matrix.pop(0)
+        n = len(res)
+        if n == 0:
+            return res
+        elif n == 1:
+            return res + [lst[0] for lst in matrix]
+        for i in range(m-2):
+            res.append(matrix[i].pop(n-1))
+        res.extend(matrix.pop(m-2)[::-1])
+        for i in range(m-2):
+            res.append(matrix[m-3-i].pop(0))
+        return res + self.spiralOrder(matrix)
+```
+
+Runtime: 70 ms, faster than 5.60% of Python3 online submissions for Spiral Matrix.
+
+Memory Usage: 13.8 MB, less than 89.19% of Python3 online submissions for Spiral Matrix.
+
+**Improvement in Code Simplicity: **https://leetcode.com/problems/spiral-matrix/discuss/20571/1-liner-in-Python-%2B-Ruby
+
+```python
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        return matrix and [*matrix.pop(0)] + self.spiralOrder([*zip(*matrix)][::-1])
+```
+
+### 55. Jump Game
+
+```python
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        # find 0 in reverse order
+        target = len(nums) - 1
+        res = True
+        for i in range(target)[::-1]:
+            if i + nums[i] >= target:
+                target = i
+                res = True
+                continue
+            res = False
+        return res
+```
+
+Runtime: 480 ms, faster than 93.45% of Python3 online submissions for Jump Game.
+
+Memory Usage: 15.3 MB, less than 25.85% of Python3 online submissions for Jump Game.
+
+### 56. Merge Intervals
+
+```python
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals = sorted(intervals, key=lambda x:x[0])
+        i = 1
+        while i < len(intervals):
+            if intervals[i-1][1] >= intervals[i][0]:
+                temp = intervals.pop(i)
+                intervals[i-1][1] = max(intervals[i-1][1], temp[1])
+            else:
+                i += 1
+        return intervals
+```
+
+Runtime: 177 ms, faster than 66.52% of Python3 online submissions for Merge Intervals.
+
+Memory Usage: 18.1 MB, less than 86.08% of Python3 online submissions for Merge Intervals.
+
+### 57. Insert Interval
+
+```python
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        i = 0
+        while i < len(intervals) and intervals[i][1] < newInterval[0]:
+            i += 1
+        if i == len(intervals):
+            return intervals + [newInterval]
+        if intervals[i][0] > newInterval[1]:
+            return intervals[:i] + [newInterval] + intervals[i:]
+        intervals[i][0] = min(intervals[i][0], newInterval[0])
+        intervals[i][1] = max(intervals[i][1], newInterval[1])
+        i += 1
+        while i < len(intervals) and intervals[i-1][1] >= intervals[i][0]:
+                temp = intervals.pop(i)
+                intervals[i-1][1] = max(intervals[i-1][1], temp[1])
+        return intervals
+```
+
+Runtime: 92 ms, faster than 74.75% of Python3 online submissions for Insert Interval.
+
+Memory Usage: 17.3 MB, less than 65.75% of Python3 online submissions for Insert Interval.
+
 
 
 ## Database
@@ -978,5 +1080,17 @@ SELECT (
         Employee 
     ORDER BY Salary DESC
     LIMIT 1 OFFSET 1) AS SecondHighestSalary
+```
+
+### 178. Rank Scores
+
+```mysql
+SELECT 
+    score, 
+    DENSE_RANK() OVER (
+        ORDER BY score DESC
+    ) AS 'rank'
+FROM 
+    Scores;
 ```
 

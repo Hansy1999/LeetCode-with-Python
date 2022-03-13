@@ -1056,6 +1056,24 @@ Runtime: 92 ms, faster than 74.75% of Python3 online submissions for Insert Inte
 
 Memory Usage: 17.3 MB, less than 65.75% of Python3 online submissions for Insert Interval.
 
+### 59. Spiral Matrix II
+
+```python
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        return [[*range(1, n+1)]] + [*zip(*self.generateTwoEdges(n-1, n+1)[::-1])]
+    def generateTwoEdges(self, length, start):
+        if length == 0:
+            return []
+        res = self.generateTwoEdges(length-1, start+2*length)
+        res = [[*range(start+length, start+2*length)]] + [*zip(*res[::-1])]
+        return [[*range(start, start+length)]] + [*zip(*res[::-1])]
+```
+
+Runtime: 66 ms, faster than 9.72% of Python3 online submissions for Spiral Matrix II.
+
+Memory Usage: 13.9 MB, less than 89.61% of Python3 online submissions for Spiral Matrix II.
+
 
 
 ## Database

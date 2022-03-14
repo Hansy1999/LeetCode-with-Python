@@ -1097,6 +1097,117 @@ Runtime: 32 ms, faster than 90.83% of Python3 online submissions for Permutation
 
 Memory Usage: 13.8 MB, less than 86.19% of Python3 online submissions for Permutation Sequence.
 
+### 61. Rotate List
+
+```python
+class Solution:
+    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        if not head:
+            return head
+        now = head
+        length = 1
+        while now.next:
+            now = now.next
+            length += 1
+        cnt = k % length
+        if cnt == 0:
+            return head
+        now.next = head
+        now = head
+        cnt = length - 1 - cnt
+        while cnt > 0:
+            now = now.next
+            cnt -= 1
+        head = now.next
+        now.next = None
+        return head
+```
+
+Runtime: 63 ms, faster than 29.24% of Python3 online submissions for Rotate List.
+
+Memory Usage: 13.9 MB, less than 85.83% of Python3 online submissions for Rotate List.
+
+### 62. Unique Paths
+
+```python
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        if min(m, n) == 1:
+            return 1
+        lst = [1] * m
+        for i in range(n-1):
+            for j in range(1, m):
+                lst[j] = lst[j] + lst[j-1]
+        return lst[-1]
+```
+
+Runtime: 56 ms, faster than 23.46% of Python3 online submissions for Unique Paths.
+
+Memory Usage: 13.8 MB, less than 83.86% of Python3 online submissions for Unique Paths.
+
+### 63. Unique Paths II
+
+```python
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        n = len(obstacleGrid)
+        m = len(obstacleGrid[0])
+        if min(m, n) == 1:
+            if sum([sum(i) for i in obstacleGrid]) > 0:
+                return 0
+            else:
+                return 1
+        lst = [0] * (m+1)
+        if obstacleGrid[0][0] == 1:
+            return 0
+        lst[1] = 1
+        for i in range(n):
+            for j in range(m):
+                lst[j+1] = (lst[j+1] + lst[j]) * (1 - obstacleGrid[i][j])
+        return lst[-1]
+```
+
+Runtime: 69 ms, faster than 36.41% of Python3 online submissions for Unique Paths II.
+
+Memory Usage: 13.8 MB, less than 98.18% of Python3 online submissions for Unique Paths II.
+
+### 64. Minimum Path Sum
+
+```
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        m = len(grid[0])
+        lst = [sum(grid[0][:j]) for j in range(1, m+1)]
+        for i in range(1, n):
+            lst[0] += grid[i][0]
+            for j in range(1, m):
+                lst[j] = min(lst[j-1], lst[j]) + grid[i][j]
+        return lst[-1]
+```
+
+Runtime: 84 ms, faster than 99.92% of Python3 online submissions for Minimum Path Sum.
+
+Memory Usage: 14.7 MB, less than 93.54% of Python3 online submissions for Minimum Path Sum.
+
+### 71. Simplify Path
+
+```python
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        res = []
+        for i in path.split('/'):
+            if i == '..':
+                res = res[:-1]
+            elif i and i != '.':
+                res.append(i)
+        return '/' + '/'.join(res)
+```
+
+Runtime: 50 ms, faster than 44.80% of Python3 online submissions for Simplify Path.
+
+Memory Usage: 13.9 MB, less than 87.69% of Python3 online submissions for Simplify Path.
+
 
 
 ## Database

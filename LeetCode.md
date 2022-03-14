@@ -1208,6 +1208,49 @@ Runtime: 50 ms, faster than 44.80% of Python3 online submissions for Simplify Pa
 
 Memory Usage: 13.9 MB, less than 87.69% of Python3 online submissions for Simplify Path.
 
+### 73. Set Matrix Zeroes
+
+```python
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        i = j = 0
+        m, n = len(matrix), len(matrix[0])
+        row_with_0 = []
+        col_with_0 = []
+        while i < m:
+            j = 0
+            while j < n:
+                if matrix[i][j]: 
+                    j += 1
+                    continue
+                row_with_0.append(i)
+                break
+            i += 1
+        i = j = 0
+        while j < n:
+            i = 0
+            while i < m:
+                if matrix[i][j]: 
+                    i += 1
+                    continue
+                col_with_0.append(j)
+                break
+            j += 1
+        for i in row_with_0:
+            for j in range(n):
+                matrix[i][j] = 0
+        for j in col_with_0:
+            for i in range(m):
+                matrix[i][j] = 0
+```
+
+Runtime: 279 ms, faster than 6.67% of Python3 online submissions for Set Matrix Zeroes.
+
+Memory Usage: 14.7 MB, less than 69.47% of Python3 online submissions for Set Matrix Zeroes.
+
 
 
 ## Database

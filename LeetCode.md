@@ -1074,6 +1074,29 @@ Runtime: 66 ms, faster than 9.72% of Python3 online submissions for Spiral Matri
 
 Memory Usage: 13.9 MB, less than 89.61% of Python3 online submissions for Spiral Matrix II.
 
+### 60. Permutation Sequence
+
+```python
+class Solution:
+    def getPermutation(self, n: int, k: int) -> str:
+        fac = [1]
+        nlist = ['1']
+        for i in range(1, n):
+            fac.append(fac[-1] * i)
+            nlist.append(str(i + 1))
+        return ''.join(self.getNext(n, k-1, nlist, fac))
+    
+    def getNext(self, n, k, nlist, fac):
+        if n == 0:
+            return []
+        now = nlist.pop(k // fac[n - 1])
+        return [now] + self.getNext(n - 1, k % fac[n - 1], nlist, fac)
+```
+
+Runtime: 32 ms, faster than 90.83% of Python3 online submissions for Permutation Sequence.
+
+Memory Usage: 13.8 MB, less than 86.19% of Python3 online submissions for Permutation Sequence.
+
 
 
 ## Database

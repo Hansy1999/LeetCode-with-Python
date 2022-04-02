@@ -1277,6 +1277,23 @@ SELECT (
     LIMIT 1 OFFSET 1) AS SecondHighestSalary
 ```
 
+### 177. Nth Highest Salary
+
+```mysql
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  DECLARE M INT;
+  SET M = N-1;
+  RETURN (
+      # Write your MySQL query statement below.
+      SELECT DISTINCT salary 
+      FROM Employee 
+      ORDER BY salary DESC
+      LIMIT 1 OFFSET M
+  );
+END
+```
+
 ### 178. Rank Scores
 
 ```mysql
@@ -1287,5 +1304,221 @@ SELECT
     ) AS 'rank'
 FROM 
     Scores;
+```
+
+### 180. Consecutive Numbers
+
+```mysql
+# Write your MySQL query statement below
+SELECT DISTINCT num AS ConsecutiveNums FROM Logs
+WHERE (id-1, num) IN (SELECT * FROM Logs) AND (id+1, num) IN (SELECT * FROM Logs) 
+```
+
+### 181. Employees Earning More Than Their Managers
+
+```mysql
+# Write your MySQL query statement below
+SELECT a.name AS Employee FROM Employee a
+INNER JOIN Employee b ON a.managerId = b.id
+WHERE a.salary > b.salary
+```
+
+### 182. Duplicate Emails
+
+```mysql
+# Write your MySQL query statement below
+SELECT email AS Email FROM Person
+GROUP BY email
+HAVING COUNT(Email) > 1
+```
+
+### 183. Customers Who Never Order
+
+```mysql
+# Write your MySQL query statement below
+SELECT name AS Customers FROM Customers
+WHERE id NOT IN (SELECT DISTINCT customerId FROM Orders)
+```
+
+### 184. Department Highest Salary
+
+```mysql
+# Write your MySQL query statement below
+SELECT a.name AS Department, b.name AS Employee, b.salary AS Salary FROM Department a
+INNER JOIN 
+(SELECT 
+    name, 
+    salary, 
+    MAX(salary) OVER (PARTITION BY departmentId) AS max_salary, 
+    departmentId 
+FROM Employee) b
+ON a.id = b.departmentId
+WHERE salary = max_salary
+```
+
+### 185. Department Top Three Salaries
+
+```mysql
+# Write your MySQL query statement below
+SELECT a.name AS Department, b.name AS Employee, b.salary AS Salary FROM Department a
+INNER JOIN 
+(SELECT 
+    name, 
+    salary, 
+    DENSE_RANK() OVER (PARTITION BY departmentId ORDER BY salary DESC) AS drank, 
+    departmentId 
+FROM Employee) b
+ON a.id = b.departmentId
+WHERE drank < 4
+```
+
+### 196. Delete Duplicate Emails
+
+```mysql
+# Write your MySQL query statement below
+DELETE a FROM Person a, Person b
+WHERE a.email = b.email AND a.id > b.id
+```
+
+### 197. Rising Temperature
+
+```mysql
+# Write your MySQL query statement below
+SELECT w1.id FROM Weather w1, Weather w2
+WHERE DATEDIFF(w1.recordDate, w2.recordDate) = 1 AND w1.temperature > w2.temperature
+```
+
+### 262. Trips and Users
+
+```mysql
+# Write your MySQL query statement below
+SELECT 
+    request_at AS Day, 
+    ROUND(COUNT(CASE WHEN status <> 'completed' THEN 1 ELSE NULL END) / COUNT(*), 2) AS 'Cancellation Rate'
+FROM Trips
+WHERE 
+    request_at BETWEEN '2013-10-01' AND '2013-10-03'
+AND
+    client_id IN (SELECT users_id FROM Users WHERE role = 'client' AND banned = 'No')
+AND
+    driver_id IN (SELECT users_id FROM Users WHERE role = 'driver' AND banned = 'No')
+GROUP BY request_at
+```
+
+### 511. Game Play Analysis I
+
+```mysql
+# Write your MySQL query statement below
+SELECT player_id, MIN(event_date) AS first_login
+FROM Activity
+GROUP BY player_id
+```
+
+### 512. Game Play Analysis II
+
+```mysql
+# Write your MySQL query statement below
+SELECT a.player_id, b.device_id
+FROM (
+    SELECT player_id, MIN(event_date) AS first_login
+    FROM Activity
+    GROUP BY player_id
+) a LEFT JOIN Activity b
+ON a.player_id = b.player_id AND a.first_login = b.event_date
+```
+
+### 534. Game Play Analysis III
+
+```mysql
+# Write your MySQL query statement below
+SELECT 
+    player_id, 
+    event_date, 
+    SUM(games_played) OVER (
+        PARTITION BY player_id 
+        ORDER BY event_date 
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS games_played_so_far
+FROM Activity
+```
+
+### 550. Game Play Analysis IV
+
+```mysql
+# Write your MySQL query statement below
+SELECT ROUND((
+    SELECT COUNT(DISTINCT player_id) FROM Activity
+    WHERE (player_id, DATE_SUB(event_date, INTERVAL 1 DAY)) IN (
+        SELECT player_id, MIN(event_date)
+        FROM Activity
+        GROUP BY player_id
+    )
+) / (
+    SELECT COUNT(DISTINCT player_id) FROM Activity
+), 2) AS fraction
+```
+
+### 569. Median Employee Salary
+
+```mysql
+# Write your MySQL query statement below
+WITH temp AS (
+    SELECT 
+        id,
+        ROW_NUMBER() OVER (PARTITION BY company ORDER BY salary) AS ranking,
+        COUNT(*) OVER (PARTITION BY company) AS counts
+    FROM Employee
+)
+SELECT e.id, company, salary FROM Employee e
+INNER JOIN temp t
+ON e.id = t.id
+WHERE ranking >= counts / 2 AND ranking <= counts / 2 + 1
+```
+
+### 570. Managers with at Least 5 Direct Reports
+
+```mysql
+# Write your MySQL query statement below
+SELECT name FROM (
+    SELECT managerId FROM Employee GROUP BY managerId HAVING COUNT(*) >= 5
+) a INNER JOIN Employee b
+ON a.managerId = b.id
+```
+
+### 571. Find Median Given Frequency of Numbers
+
+```mysql
+# Write your MySQL query statement below
+WITH temp AS (
+    SELECT num, SUM(frequency) OVER (ORDER BY num) AS freq_up_to FROM Numbers
+)
+SELECT ROUND(
+    ((SELECT num FROM temp 
+     WHERE freq_up_to >= (SELECT SUM(frequency) FROM Numbers) / 2
+     LIMIT 1) + 
+    (SELECT num FROM temp 
+     WHERE freq_up_to >= ((SELECT SUM(frequency) FROM Numbers) + 1) / 2 
+     LIMIT 1)) / 2, 1
+) AS median
+```
+
+### 574. Winning Candidate
+
+```mysql
+SELECT name FROM Candidate
+WHERE id = (
+    SELECT candidateId FROM Vote
+    GROUP BY candidateId
+    ORDER BY COUNT(*) DESC
+    LIMIT 1
+)
+```
+
+### 577. Employee Bonus
+
+```mysql
+SELECT name, bonus FROM Employee e LEFT JOIN Bonus b
+ON e.empId = b.empId
+WHERE IFNULL(bonus, 0) < 1000
 ```
 

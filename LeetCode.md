@@ -1522,3 +1522,136 @@ ON e.empId = b.empId
 WHERE IFNULL(bonus, 0) < 1000
 ```
 
+### 578. Get Highest Answer Rate Question
+
+```mysql
+SELECT question_id AS survey_log FROM (
+    SELECT 
+        question_id, 
+        SUM(IF(action = 'answer', 1, 0)) / SUM(IF(action = 'show', 1, 0)) as ans_rate
+    FROM SurveyLog
+    GROUP BY question_id
+) temp
+ORDER BY ans_rate DESC, question_id ASC
+LIMIT 1
+```
+
+### 579. Find Cumulative Salary of an Employee
+
+```mysql
+SELECT 
+    E1.id, 
+    E1.month, 
+    E1.salary + IFNULL(E2.salary, 0) + IFNULL(E3.salary, 0) AS Salary
+FROM Employee E1
+LEFT JOIN Employee E2
+ON E1.id = E2.id AND E1.month = E2.month + 1
+LEFT JOIN Employee E3
+ON E1.id = E3.id AND E1.month = E3.month + 2
+INNER JOIN (
+    SELECT id, month, MAX(month) OVER (PARTITION BY id) AS max_month
+    FROM Employee
+) E4
+ON E1.id = E4.id AND E1.month = E4.month
+WHERE E1.month < E4.max_month
+ORDER BY E1.id ASC, E1.month DESC
+```
+
+### 580. Count Student Number in Departments
+
+```mysql
+SELECT dept_name, IFNULL(student_number, 0) AS student_number
+FROM Department D
+LEFT JOIN (
+    SELECT dept_id, COUNT(*) AS student_number 
+    FROM Student
+    GROUP BY dept_id
+) S
+ON D.dept_id = S.dept_id
+ORDER BY student_number DESC, dept_name
+```
+
+### 584. Find Customer Referee
+
+```mysql
+SELECT name FROM Customer WHERE IFNULL(referee_id, 0) <> 2
+```
+
+### 585. Investments in 2016
+
+```mysql
+SELECT ROUND(SUM(tiv_2016), 2) AS tiv_2016 FROM Insurance I
+INNER JOIN (
+    SELECT tiv_2015, COUNT(*) AS cnt2015 FROM Insurance GROUP BY tiv_2015
+) C1
+ON I.tiv_2015 = C1.tiv_2015
+INNER JOIN (
+    SELECT lat, lon, COUNT(*) AS cntcity FROM Insurance GROUP BY lat, lon
+) C2
+ON I.lat = C2.lat AND I.lon = C2.lon
+WHERE cnt2015 > 1 AND cntcity = 1
+```
+
+### 586. Customer Placing the Largest Number of Orders
+
+```mysql
+SELECT customer_number FROM Orders
+GROUP BY customer_number
+ORDER BY COUNT(*) DESC
+LIMIT 1
+```
+
+### 595. Big Countries
+
+```mysql
+SELECT name, population, area FROM World
+WHERE area >= 3000000 OR population >= 25000000
+```
+
+### 596. Classes More Than 5 Students
+
+```mysql
+SELECT class FROM Courses GROUP BY class HAVING COUNT(*) >= 5 
+```
+
+### 597. Friend Requests I: Overall Acceptance Rate
+
+```mysql
+SELECT ROUND(IFNULL(
+    (SELECT COUNT(DISTINCT requester_id, accepter_id) FROM RequestAccepted AS A) /
+    (SELECT COUNT(DISTINCT sender_id, send_to_id) FROM FriendRequest AS B), 0), 2) 
+    AS accept_rate
+```
+
+### 601. Human Traffic of Stadium
+
+```mysql
+WITH temp AS (
+    SELECT S1.id AS id1, S2.id AS id2, S3.id AS id3
+    FROM Stadium S1, Stadium S2, Stadium S3
+    WHERE S1.id = S2.id - 1 AND S1.id = S3.id - 2 AND 
+        S1.people >= 100 AND S2.people >= 100 AND S3.people >= 100
+)
+SELECT * FROM Stadium WHERE id IN (
+    SELECT id1 FROM temp
+    UNION
+    SELECT id2 FROM temp
+    UNION
+    SELECT id3 FROM temp
+)
+```
+
+### 1126. Active Businesses
+
+```mysql
+WITH Avg_act AS (
+    SELECT event_type, AVG(occurences) AS avg_act
+    FROM Events GROUP BY event_type
+)
+
+SELECT business_id FROM Events e
+LEFT JOIN Avg_act a ON e.event_type = a.event_type
+WHERE occurences > avg_act
+GROUP BY business_id HAVING COUNT(*) > 1
+```
+
